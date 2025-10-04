@@ -90,7 +90,9 @@ public class NumberTriangle {
     public int retrieve(String path) {
         int i = 0;
         NumberTriangle current = this;
+        // if the path is empty return root right away
         if (path.isEmpty()){ return this.getRoot();}
+        // if path is not empty then pare through the path according to the directions and then return requested value
         while (i < path.length()) {
             if (path.charAt(i) == 'l') {
                 current = current.left;

@@ -88,8 +88,19 @@ public class NumberTriangle {
      *
      */
     public int retrieve(String path) {
-        // TODO implement this method
-        return -1;
+        int i = 0;
+        NumberTriangle current = this;
+        if (path.isEmpty()){ return this.getRoot();}
+        while (i < path.length()) {
+            if (path.charAt(i) == 'l') {
+                current = current.left;
+            }
+            else if (path.charAt(i) == 'r') {
+                current = current.right;
+            }
+            i++;
+        }
+        return current.getRoot();
     }
 
     /** Read in the NumberTriangle structure from a file.
@@ -109,20 +120,30 @@ public class NumberTriangle {
         InputStream inputStream = NumberTriangle.class.getClassLoader().getResourceAsStream(fname);
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
-
-        // TODO define any variables that you want to use to store things
-
         // will need to return the top of the NumberTriangle,
         // so might want a variable for that.
         NumberTriangle top = null;
-
+        NumberTriangle[] previousRow = null;
         String line = br.readLine();
         while (line != null) {
-
+            String[] parts = line.trim().split("\\s+");
+            NumberTriangle[] currentRow = new NumberTriangle[parts.length];
             // remove when done; this line is included so running starter code prints the contents of the file
+            for (int i = 0; i < parts.length; i++) {
+                int value = Integer.parseInt(parts[i]);
+                currentRow[i] = new NumberTriangle(value);
+            }
+            if (top == null) {
+                top = currentRow[0];
+            }
+            if (previousRow != null) {
+                for (int i = 0; i < previousRow.length; i++) {
+                    previousRow[i].setLeft(currentRow[i]);
+                    previousRow[i].setRight(currentRow[i + 1]);
+                }
+            }
+            previousRow = currentRow;
             System.out.println(line);
-
-            // TODO process the line
 
             //read the next line
             line = br.readLine();
